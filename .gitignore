@@ -25,6 +25,12 @@ coverage/
 .env
 .env.*
 
+# SSL Certificates (self-signed for localhost only)
+certs/
+*.pem
+*.key
+*.crt
+
 # Dumps and temp test data
 dump/
 dump-test/

@@ -1,15 +1,18 @@
 const authService = require("../services/auth.service");
 
-const handleError = (res, error) =>
-  res
-    .status(error.statusCode || 500)
-    .json({ message: error.message || "Lỗi server" });
+const handleError = (res, error) => {
+  const statusCode = error.statusCode || 500;
+  const message = error.message || "Lỗi server";
+};
 
 // Controller: chỉ nhận request, gọi authService xử lý và trả kết quả.
 exports.register = async (req, res) => {
   try {
     const result = await authService.registerUser(req.body);
-    return res.status(200).json(result);
+    return res.status(200).json({
+      success: true,
+      ...result
+    });
   } catch (error) {
     return handleError(res, error);
   }
@@ -19,7 +22,10 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const result = await authService.loginUser(req.body);
-    return res.status(200).json(result);
+    return res.status(200).json({
+      success: true,
+      ...result
+    });
   } catch (error) {
     return handleError(res, error);
   }
