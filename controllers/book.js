@@ -11,7 +11,7 @@ const createBook = async (req, res) => {
     const result = await bookService.createBook(
       req.body,
       req.files,
-      req.chapters
+      // req.chapters
     );
     return res.status(201).json(result);
   } catch (error) {
@@ -19,27 +19,13 @@ const createBook = async (req, res) => {
   }
 };
 
-const getChaptersByBook = async (req, res) => {
-  try {
-    const result = await bookService.getChaptersByBook(req.params.id);
-    return res.status(200).json(result);
-  } catch (error) {
-    return handleError(res, error);
-  }
-};
 
-const getChapterContent = async (req, res) => {
-  try {
-    const result = await bookService.getChapterContent(req.params);
-    return res.status(200).json(result);
-  } catch (error) {
-    return handleError(res, error);
-  }
-};
 
 const getAllBooks = async (req, res) => {
   try {
-    const result = await bookService.getAllBooks();
+    // Check if client wants decrypted content (query param: ?includeContent=true)
+    const includeContent = req.query.includeContent === "true";
+    const result = await bookService.getAllBooks(includeContent);
     return res.status(200).json(result);
   } catch (error) {
     return handleError(res, error);
@@ -111,7 +97,12 @@ const deleteBook = async (req, res) => {
 
 const getBooksByCategory = async (req, res) => {
   try {
-    const result = await bookService.getBooksByCategory(req.params.categoryId);
+    // Check if client wants decrypted content (query param: ?includeContent=true)
+    const includeContent = req.query.includeContent === "true";
+    const result = await bookService.getBooksByCategory(
+      req.params.categoryId,
+      includeContent
+    );
     return res.status(200).json(result);
   } catch (error) {
     return handleError(res, error);
@@ -121,12 +112,41 @@ const getBooksByCategory = async (req, res) => {
 const getTopViewedBooks = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit, 10) || 5;
-    const result = await bookService.getTopViewedBooks(limit);
+    // Check if client wants decrypted content (query param: ?includeContent=true)
+    const includeContent = req.query.includeContent === "true";
+    const result = await bookService.getTopViewedBooks(limit, includeContent);
     return res.status(200).json(result);
   } catch (error) {
     return handleError(res, error);
   }
 };
+
+const getPdf = async (req, res) => {
+  try {
+    const buffer = await bookService.getPdf(req.params.id);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `inline; filename="book.pdf"`);
+
+    return res.send(buffer);
+  } catch (error) {
+    return handleError(res, error);
+  }
+};
+
+const getPdfHandler = async (req, res) => {
+  try {
+    const buffer = await bookService.getPdfHandler(req.params.id);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `inline; filename="book.pdf"`);
+
+    return res.send(buffer);
+  } catch (error) {
+    return handleError(res, error);
+  }
+}
+
 
 module.exports = {
   createBook,
@@ -134,12 +154,12 @@ module.exports = {
   getBookLock,
   getBookById,
   getAllBookById,
-  getChaptersByBook,
-  getChapterContent,
   updateCover,
   toggleBookStatus,
   deleteBook,
   getBooksByCategory,
   getTopViewedBooks,
   getBookByIdNoView,
+  getPdf,
+  getPdfHandler,
 };

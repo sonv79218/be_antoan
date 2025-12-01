@@ -104,25 +104,11 @@ const loginUser = async ({ email, password }) => {
   console.log("🎫 Login: Đang tạo JWT tokens...");
   const accessToken = signAccessToken(user);
   const refreshToken = signRefreshToken(user);
-  console.log("✅ Login: JWT tokens đã được tạo", {
-    accessTokenLength: accessToken.length,
-    refreshTokenLength: refreshToken.length,
-  });
-
-  // Lưu refreshToken vào DB
-  console.log("💾 Login: Đang lưu refreshToken vào DB...");
   await Token.findOneAndUpdate(
     { user: user._id },
     { refreshToken },
     { upsert: true, new: true }
   );
-  console.log("✅ Login: RefreshToken đã được lưu");
-
-  console.log("🎉 Login: Đăng nhập thành công", {
-    userId: user._id,
-    email: user.email,
-    role: user.role,
-  });
 
   return {
     message: "Đăng nhập thành công",

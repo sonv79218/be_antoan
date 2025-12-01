@@ -64,44 +64,44 @@ if (useHttps) {
   console.log("🌐 Server chạy với HTTP");
 }
 
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: "*",
+//   },
+// });
 
-app.set("io", io);
+// app.set("io", io);
 
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+// app.use((req, res, next) => {
+//   req.io = io;
+//   next();
+// });
 
-io.on("connection", (socket) => {
-  console.log("client connected", socket.id);
+// io.on("connection", (socket) => {
+//   console.log("client connected", socket.id);
 
-  socket.on("send-message", (data) => {
-    io.emit("receive-message", data);
-  });
+//   socket.on("send-message", (data) => {
+//     io.emit("receive-message", data);
+//   });
 
-  // phòng chat riêng cho comment theo từng sách
-  socket.on("join-book", (book) => {
-    socket.join(book);
-    console.log(`📚 Client ${socket.id} đã vào phòng sách ${book}`);
-  });
+//   // phòng chat riêng cho comment theo từng sách
+//   socket.on("join-book", (book) => {
+//     socket.join(book);
+//     console.log(`📚 Client ${socket.id} đã vào phòng sách ${book}`);
+//   });
 
-  // kênh chat chung (di chuyển vào đây)
-  socket.on("sendMessage", (msg) => {
-    io.emit("newMessage", {
-      socketId: socket.id,
-      ...msg,
-    });
-  });
+//   // kênh chat chung (di chuyển vào đây)
+//   socket.on("sendMessage", (msg) => {
+//     io.emit("newMessage", {
+//       socketId: socket.id,
+//       ...msg,
+//     });
+//   });
 
-  socket.on("disconnect", () => {
-    console.log("client disconnected", socket.id);
-  });
-});
+//   socket.on("disconnect", () => {
+//     console.log("client disconnected", socket.id);
+//   });
+// });
 
 
 app.use(cors());
@@ -117,6 +117,7 @@ app.use("/favorite", favoriteRoutes);
 app.use("/comment", commentRoutes);
 app.use("/report", reportRoutes);
 app.use("/chat", chatRoutes);
+app.use("/book-test", require("./routes/book.test")); // Route test ebook decryption
 
 const PORT = process.env.PORT || 5000;
 const PROTOCOL = useHttps && server instanceof https.Server ? "https" : "http";
