@@ -117,7 +117,6 @@ app.use("/favorite", favoriteRoutes);
 app.use("/comment", commentRoutes);
 app.use("/report", reportRoutes);
 app.use("/chat", chatRoutes);
-app.use("/book-test", require("./routes/book.test")); // Route test ebook decryption
 
 const PORT = process.env.PORT || 5000;
 const PROTOCOL = useHttps && server instanceof https.Server ? "https" : "http";

@@ -7,7 +7,7 @@ const {
   // uploadDocument,
   uploadBookCover,
 } = require("../middlewares/upload.middleware");
-const extractChapters = require("../middlewares/extractChapters.middleware");
+// const extractChapters = require("../middlewares/extractChapters.middleware");
 const bookController = require("../controllers/book.js");
 const isAdmin = require("../middlewares/role.middleware");
 const auth = require("../middlewares/auth.middleware");

@@ -480,21 +480,21 @@ const getPdf = async (bookId) => {
   return decryptedBuffer;
 };
 
-const getPdfHandler = async (req, res, next) => {
-  try {
-    const decryptedBuffer = await getPdf(req.params.bookId);
+// const getPdfHandler = async (req, res, next) => {
+//   try {
+//     const decryptedBuffer = await getPdf(req.params.bookId);
 
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Length": decryptedBuffer.length,
-      "Content-Disposition": `inline; filename="book.pdf"`, // inline: mở trực tiếp, attachment: tải về
-    });
-    console.log(decryptedBuffer);
-    res.send(decryptedBuffer); // gửi trực tiếp buffer
-  } catch (err) {
-    next(err);
-  }
-};
+//     res.set({
+//       "Content-Type": "application/pdf",
+//       "Content-Length": decryptedBuffer.length,
+//       "Content-Disposition": `inline; filename="book.pdf"`, // inline: mở trực tiếp, attachment: tải về
+//     });
+//     console.log(decryptedBuffer);
+//     res.send(decryptedBuffer); // gửi trực tiếp buffer
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 
 
@@ -511,6 +511,6 @@ module.exports = {
   getBooksByCategory,
   getTopViewedBooks,
   getPdf,
-  getPdfHandler,
+  // getPdfHandler,
 };
 

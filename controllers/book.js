@@ -134,18 +134,18 @@ const getPdf = async (req, res) => {
   }
 };
 
-const getPdfHandler = async (req, res) => {
-  try {
-    const buffer = await bookService.getPdfHandler(req.params.id);
+// const getPdfHandler = async (req, res) => {
+//   try {
+//     const buffer = await bookService.getPdfHandler(req.params.id);
 
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `inline; filename="book.pdf"`);
+//     res.setHeader("Content-Type", "application/pdf");
+//     res.setHeader("Content-Disposition", `inline; filename="book.pdf"`);
 
-    return res.send(buffer);
-  } catch (error) {
-    return handleError(res, error);
-  }
-}
+//     return res.send(buffer);
+//   } catch (error) {
+//     return handleError(res, error);
+//   }
+// }
 
 
 module.exports = {
@@ -161,5 +161,5 @@ module.exports = {
   getTopViewedBooks,
   getBookByIdNoView,
   getPdf,
-  getPdfHandler,
+  // getPdfHandler,
 };
